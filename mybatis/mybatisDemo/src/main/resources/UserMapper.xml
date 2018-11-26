@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.godfunc.UserMapper">
+
+    <resultMap id="userMap" type="com.godfunc.User">
+        <id column="id" property="id"/>
+        <result column="name" property="name"/>
+        <result column="age" property="age"/>
+        <discriminator javaType="integer" column="age">
+            <case value="10" resultType="com.godfunc.Job">
+                <association property="job" column="id" select="com.godfunc.JobMapper.select"/>
+            </case>
+        </discriminator>
+    </resultMap>
+
+    <resultMap id="userJobsMap" type="com.godfunc.UserJobs">
+        <result column="id" property="id"/>
+        <result column="name" property="name"/>
+        <result column="age" property="age"/>
+        <collection property="jobs" column="{uid=id}" fetchType="lazy" select="com.godfunc.JobMapper.jobs"/>
+    </resultMap>
+
+    <select id="selectUser" resultType="com.godfunc.User">
+      select * from user where id = #{id}
+    </select>
+
+    <insert id="insert" parameterType="com.godfunc.User" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO user(name, age) values(#{name}, #{age})
+    </insert>
+
+    <update id="update">
+        update user set name = #{name}, age = #{age} where id = #{id}
+    </update>
+
+    <update id="updateMap">
+        update user set name = #{name}, age = #{age} where id = #{id}
+    </update>
+    <select id="selectResultMap" resultType="com.godfunc.User">
+      select * from user
+    </select>
+
+    <select id="selectUserWithJob" resultMap="userMap">
+      select * from user  where id = #{id}
+    </select>
+
+    <select id="selectUserWithJobs" resultMap="userJobsMap">
+      select u.*, b.id job_id, b.name job_name, b.u_id  from user u left join job b on b.u_id = u.id where u.id = #{id}
+    </select>
+
+</mapper>
