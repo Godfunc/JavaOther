@@ -48,5 +48,9 @@
     <select id="selectUserWithJobs" resultMap="userJobsMap">
       select u.*, b.id job_id, b.name job_name, b.u_id  from user u left join job b on b.u_id = u.id where u.id = #{id}
     </select>
+    <select id="selectByUserName" resultType="com.godfunc.User">
+        <bind name="_name" value="'%'+name+'%'"/>
+        select * from user where name like #{_name}
+    </select>
 
 </mapper>

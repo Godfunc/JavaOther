@@ -129,5 +129,18 @@ public class Demo1 {
         sqlSession.close();
     }
 
+    @Test
+    public void func9() throws IOException {
+        String resource = "mybatis-config.xml";
+        InputStream resourceAsStream = Resources.getResourceAsStream(resource);
+        SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(resourceAsStream);
+        SqlSession sqlSession = sqlSessionFactory.openSession();
+        UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
+        List<User> list = userMapper.selectByUserName("王");
+        log.error("result {}", list);
+        // 注意提交数据
+        sqlSession.close();
+    }
+
 
 }

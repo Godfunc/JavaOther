@@ -22,4 +22,6 @@ public interface UserMapper {
     User selectUserWithJob(Long id);
 
     UserJobs selectUserWithJobs(Long id);
+
+    List<User> selectByUserName(@Param("name") String name);
 }
