@@ -138,6 +138,12 @@ public class Demo1 {
         UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
         List<User> list = userMapper.selectByUserName("王");
         log.error("result {}", list);
+        List<User> list1 = userMapper.selectByUserName("天");
+        log.error("result {}", list1);
+        List<User> list2 = userMapper.selectByUserName("王");
+        log.error("result {}", list2);
+
+        log.error("flag {}", list == list2);
         // 注意提交数据
         sqlSession.close();
     }

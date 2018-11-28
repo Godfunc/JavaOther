@@ -255,3 +255,28 @@
 1. 当我们进行子查询，想要传递多个参数时，可以这样做 `column="{key1=column1,key2=column2}"`* 
 2. `fetchType="eager|lazy"`  设置子查询立即加载|懒加载
 
+3. `bind` 将一个表达式的值绑定到一个变量中（可以用来做模糊查询的`%` 拼接）
+
+   ```xml
+   <select id="selectByUserName" resultType="com.godfunc.User">
+       <bind name="_name" value="'%'+name+'%'"/>
+       select * from user where name like #{_name}
+   </select>
+   ```
+
+   *Note: 如果只有一个参数，也要加 `@Param` 注解，不然会报错*
+
+
+
+### 缓存
+
+1. 一级缓存 默认是开启的
+2. 二级缓存
+   1. 缓存的回收策略（eviction）：
+      - LRU - 最近最少使用的 ：移除最长时间不被使用的对象。
+      - FIFO - 先进先出：按对象进入缓存的顺序来移除他们。
+      - SOFT - 软引用：移除基于垃圾回收器状态和软引用规则的对象。
+      - WEAK - 弱引用：更积极地移除基于垃圾收集器状态和弱引用规则的对象。
+   2. 缓存刷新间隔（flushInterval）：缓存多久时间清空一次，默认不清空，设置一个毫秒值。
+   3. 是否只读（readOnly）
+
